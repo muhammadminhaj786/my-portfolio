@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Muhammad Minhaj — Portfolio
 
-## Getting Started
+Interactive 3D portfolio built with **Next.js 16**, **Tailwind CSS v4**, **Three.js / React Three Fiber**, **GSAP (ScrollTrigger + SplitText)** and **Lenis** smooth scrolling.
 
-First, run the development server:
+## Run
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm run build && npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Edit content
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Everything you'd want to change — name, email, experience, skills, projects, links — lives in
+[`src/data/portfolio.ts`](src/data/portfolio.ts).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Put your CV at `public/resume.pdf` (the Resume buttons link there).
+- Set `linkedin` in `profile` to show the LinkedIn link.
+- Portrait: `src/assets/avatar.jpg` (also used in the social share image). Project screenshots: `src/assets/projects/`.
+- After deploying, set `NEXT_PUBLIC_SITE_URL` (e.g. `https://minhaj.dev`) so OG tags, sitemap and canonical URLs point at your domain.
 
-## Learn More
+## How it fits together
 
-To learn more about Next.js, take a look at the following resources:
+| File | Role |
+| --- | --- |
+| `src/components/three/Scene.tsx` | WebGL scene: noise-displaced shader blob, orbit rings, particle field |
+| `src/components/three/shaders.ts` | GLSL for the blob and particles |
+| `src/lib/scene-state.ts` | Shared mutable state GSAP animates and the scene reads each frame |
+| `src/components/ScrollChoreography.tsx` | Per-section 3D poses (position, scale, distortion, colour, dim) scrubbed on scroll |
+| `src/components/providers/SmoothScroll.tsx` | Lenis ↔ GSAP ticker sync, scroll velocity, mouse tracking |
+| `src/components/sections/*` | Hero, About, Experience, Skills, Projects (pinned horizontal scroll on desktop), Contact |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+SEO: `opengraph-image.tsx` (share card with portrait), `icon.tsx`, `robots.ts`, `sitemap.ts`, and Person JSON-LD in `page.tsx`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Respects `prefers-reduced-motion` (no smooth scroll, no pinned horizontal section).
 
-## Deploy on Vercel
+## Deploy
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Push to GitHub and import the repo on [Vercel](https://vercel.com/new) — no config needed.

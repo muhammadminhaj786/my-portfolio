@@ -1,69 +1,138 @@
-import Image from "next/image";
+import SmoothScroll from "@/components/providers/SmoothScroll";
+import SceneCanvas from "@/components/three/SceneCanvas";
+import ScrollChoreography from "@/components/ScrollChoreography";
+import Preloader from "@/components/layout/Preloader";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import Cursor from "@/components/ui/Cursor";
+import ScrollProgress from "@/components/ui/ScrollProgress";
+import Hero from "@/components/sections/Hero";
+import About from "@/components/sections/About";
+import Experience from "@/components/sections/Experience";
+import Skills from "@/components/sections/Skills";
+import Projects from "@/components/sections/Projects";
+import Services from "@/components/sections/Services";
+import Process from "@/components/sections/Process";
+import Contact from "@/components/sections/Contact";
+import { about, education, experience, featuredProjects, profile, projects, services, skills } from "@/data/portfolio";
+import { projectImages } from "@/lib/project-images";
+import { siteUrl } from "@/lib/site";
+
+const personId = `${siteUrl}/#person`;
+
+// Every shipped project with a live URL, featured case studies first.
+const portfolioItems = [
+  ...featuredProjects.map((p) => ({
+    name: p.title,
+    description: `${p.summary} ${p.problem} ${p.solution}`,
+    url: p.live,
+    image: projectImages[p.images.cover].src,
+    keywords: p.stack,
+    client: p.client,
+  })),
+  ...projects
+    .filter((p) => p.live)
+    .map((p) => ({
+      name: p.title,
+      description: p.problem ? `${p.problem} ${p.description}` : p.description,
+      url: p.live,
+      image: p.image ? projectImages[p.image].src : undefined,
+      keywords: p.stack,
+      client: p.client,
+    })),
+];
+
+// Structured data so Google can show a rich result when people search the name or the projects.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${siteUrl}/#website`,
+      url: siteUrl,
+      name: profile.name,
+      description: profile.tagline,
+      publisher: { "@id": personId },
+      inLanguage: "en",
+    },
+    {
+      "@type": "ProfilePage",
+      "@id": `${siteUrl}/#profile`,
+      url: siteUrl,
+      name: `${profile.name} — ${profile.role}`,
+      isPartOf: { "@id": `${siteUrl}/#website` },
+      mainEntity: { "@id": personId },
+    },
+    {
+      "@type": "Person",
+      "@id": personId,
+      name: profile.name,
+      alternateName: "Muhammad Minhaj Wahid",
+      jobTitle: profile.role,
+      description: about.intro,
+      url: siteUrl,
+      email: `mailto:${profile.email}`,
+      address: { "@type": "PostalAddress", addressLocality: "Karachi", addressCountry: "PK" },
+      worksFor: { "@type": "Organization", name: experience[0].company },
+      alumniOf: { "@type": "CollegeOrUniversity", name: education.school },
+      knowsAbout: skills.flatMap((g) => g.items),
+      makesOffer: services.map((s) => ({
+        "@type": "Offer",
+        itemOffered: { "@type": "Service", name: s.title, description: s.intro },
+      })),
+      sameAs: [profile.github, profile.linkedin].filter(Boolean),
+    },
+    {
+      "@type": "ItemList",
+      "@id": `${siteUrl}/#projects`,
+      name: `Projects by ${profile.name}`,
+      itemListElement: portfolioItems.map((p, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        item: {
+          "@type": "CreativeWork",
+          name: p.name,
+          description: p.description,
+          url: p.url,
+          ...(p.image && { image: `${siteUrl}${p.image}` }),
+          keywords: p.keywords.join(", "),
+          creator: { "@id": personId },
+          ...(p.client && { genre: "Client project" }),
+        },
+      })),
+    },
+  ],
+};
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+    <SmoothScroll>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <a
+        href="#about"
+        className="sr-only z-[95] rounded-full bg-accent px-4 py-2 text-sm font-medium text-ink focus:not-sr-only focus:fixed focus:top-4 focus:left-4"
+      >
+        Skip to content
+      </a>
+      <Preloader />
+      <SceneCanvas />
+      <div aria-hidden className="vignette pointer-events-none fixed inset-0 -z-[5]" />
+      <ScrollProgress />
+      <Cursor />
+      <Navbar />
+      <main className="relative">
+        <Hero />
+        <About />
+        <Services />
+        <Experience />
+        <Skills />
+        <Projects />
+        <Process />
+        <Contact />
       </main>
-    </div>
+      <Footer />
+      {/* Must come after the sections so its triggers account for the pinned projects spacer. */}
+      <ScrollChoreography />
+    </SmoothScroll>
   );
 }
