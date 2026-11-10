@@ -3,25 +3,12 @@
 import { useRef } from "react";
 import { gsap, SplitText, useGSAP } from "@/lib/gsap";
 
-export default function SectionHeading({
-  index,
-  eyebrow,
-  title,
-  accent,
-  className = "",
-}: {
-  index: string;
-  eyebrow: string;
-  title: string;
-  accent?: string;
-  className?: string;
-}) {
-  const root = useRef<HTMLDivElement>(null);
+export default function SectionHeading({ title, className = "" }: { title: string; className?: string }) {
+  const root = useRef<HTMLHeadingElement>(null);
 
   useGSAP(
     () => {
-      const heading = root.current!.querySelector("h2")!;
-      const split = SplitText.create(heading, {
+      const split = SplitText.create(root.current, {
         type: "lines",
         mask: "lines",
         linesClass: "pb-[0.08em]",
@@ -32,15 +19,8 @@ export default function SectionHeading({
             duration: 1.1,
             stagger: 0.08,
             ease: "expo.out",
-            scrollTrigger: { trigger: heading, start: "top 85%" },
+            scrollTrigger: { trigger: root.current, start: "top 85%" },
           }),
-      });
-      gsap.from(root.current!.querySelector(".eyebrow"), {
-        autoAlpha: 0,
-        x: -20,
-        duration: 0.8,
-        ease: "power3.out",
-        scrollTrigger: { trigger: root.current, start: "top 85%" },
       });
       return () => split.revert();
     },
@@ -48,15 +28,11 @@ export default function SectionHeading({
   );
 
   return (
-    <div ref={root} className={className}>
-      <p className="eyebrow mb-6 flex items-center gap-3 font-mono text-xs tracking-[0.25em] text-muted uppercase">
-        <span className="text-accent">{index}</span>
-        <span className="h-px w-10 bg-line" />
-        {eyebrow}
-      </p>
-      <h2 className="font-display text-[clamp(2.6rem,7vw,6.5rem)] leading-[0.95] font-medium tracking-tight">
-        {title} {accent && <em className="font-serif font-normal text-accent italic">{accent}</em>}
-      </h2>
-    </div>
+    <h2
+      ref={root}
+      className={`font-display text-[clamp(2.6rem,7vw,6.5rem)] leading-[0.95] font-medium tracking-tight ${className}`}
+    >
+      {title}
+    </h2>
   );
 }

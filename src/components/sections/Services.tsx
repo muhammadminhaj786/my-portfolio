@@ -25,7 +25,7 @@ export default function Services() {
   return (
     <section ref={root} id="services" className="relative py-28 md:py-40">
       <div className="mx-auto max-w-7xl px-6 md:px-10">
-        <SectionHeading index="02" eyebrow="What I build" title="Four kinds of work." accent="One developer." />
+        <SectionHeading title="What I do" />
 
         <div className="service-grid mt-16 grid gap-5 md:grid-cols-2">
           {services.map((s, i) => (
@@ -33,11 +33,10 @@ export default function Services() {
               key={s.title}
               className="service-card group flex flex-col rounded-3xl border border-line bg-ink/50 p-7 backdrop-blur-xl transition-colors duration-500 hover:border-accent/40 md:p-9"
             >
-              <div className="flex items-center justify-between">
+              <div>
                 <span className="grid size-12 place-items-center rounded-xl border border-line font-display text-lg font-medium transition-colors duration-500 group-hover:border-accent group-hover:bg-accent group-hover:text-ink">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <span className="font-mono text-[11px] tracking-[0.2em] text-muted uppercase">{s.tag}</span>
               </div>
 
               <h3 className="mt-7 font-display text-2xl font-medium tracking-tight md:text-3xl">{s.title}</h3>

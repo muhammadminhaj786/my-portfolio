@@ -78,7 +78,7 @@ export default function About() {
   return (
     <section ref={root} id="about" className="relative px-6 py-28 md:px-10 md:py-40">
       <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-12 lg:gap-16">
-        <SectionHeading index="01" eyebrow="About me" title="Code with" accent="purpose." className="lg:col-span-12" />
+        <SectionHeading title="About" className="lg:col-span-12" />
 
         <div className="lg:col-span-4">
           <figure className="portrait relative aspect-[4/5] max-w-sm overflow-hidden rounded-[28px] border border-line bg-white/5">
@@ -117,7 +117,7 @@ export default function About() {
             <div>
               <dt className="font-mono text-[11px] tracking-[0.2em] text-muted uppercase">Education</dt>
               <dd className="mt-1.5 text-fg">
-                {education.degree} <span className="text-muted">— {education.school}</span>
+                {education.degree} <span className="text-muted">, {education.school}</span>
               </dd>
             </div>
             <div>

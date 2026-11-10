@@ -5,19 +5,8 @@ import { gsap, useGSAP } from "@/lib/gsap";
 import { scrollToTarget } from "@/lib/lenis";
 import { navLinks, profile } from "@/data/portfolio";
 
-const fmt = new Intl.DateTimeFormat("en-US", {
-  timeZone: profile.timezone,
-  hour: "2-digit",
-  minute: "2-digit",
-  hour12: true,
-});
-
-// Ticks every 30s; the server snapshot is empty so the clock only renders in the browser.
-const subscribe = (cb: () => void) => {
-  const id = setInterval(cb, 30_000);
-  return () => clearInterval(id);
-};
-const getTime = () => fmt.format(new Date());
+// Client-only year, so a cached server render never shows last year.
+const subscribe = () => () => {};
 const getYear = () => String(new Date().getFullYear());
 const getServer = () => "";
 
@@ -25,7 +14,6 @@ const linkCls = "text-fg/80 transition-colors hover:text-accent";
 
 export default function Footer() {
   const root = useRef<HTMLElement>(null);
-  const time = useSyncExternalStore(subscribe, getTime, getServer);
   const year = useSyncExternalStore(subscribe, getYear, getServer);
 
   useGSAP(
@@ -82,20 +70,18 @@ export default function Footer() {
             {socials.map((s) => (
               <li key={s.label}>
                 <a href={s.href} target="_blank" rel="noopener noreferrer" className={linkCls}>
-                  {s.label} ↗
+                  {s.label}
                 </a>
               </li>
             ))}
           </ul>
         </div>
         <div>
-          <p className="mb-3 font-mono text-[11px] tracking-[0.2em] text-muted uppercase">Say hi</p>
+          <p className="mb-3 font-mono text-[11px] tracking-[0.2em] text-muted uppercase">Email</p>
           <a href={`mailto:${profile.email}`} className={`${linkCls} break-all`}>
             {profile.email}
           </a>
-          <p className="mt-4 text-muted">
-            Karachi · <span className="text-fg tabular-nums">{time}</span> PKT
-          </p>
+          <p className="mt-4 text-muted">{profile.location}</p>
         </div>
       </div>
 
@@ -113,9 +99,6 @@ export default function Footer() {
       <div className="mx-auto flex max-w-7xl flex-col gap-3 border-t border-line py-6 font-mono text-[11px] tracking-wider text-muted uppercase sm:flex-row sm:items-center sm:justify-between">
         <p>© {year} {profile.name}. All rights reserved.</p>
         <p className="hidden md:block">Built with Next.js · Three.js · GSAP</p>
-        <button onClick={() => scrollToTarget(0)} className="text-left uppercase hover:text-accent">
-          Back to top ↑
-        </button>
       </div>
     </footer>
   );

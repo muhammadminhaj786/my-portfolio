@@ -5,7 +5,7 @@ import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { scrollToTarget } from "@/lib/lenis";
 import { onIntroDone } from "@/lib/scene-state";
 import { navLinks, profile } from "@/data/portfolio";
-import Magnetic from "@/components/ui/Magnetic";
+import { buttonClass } from "@/components/ui/button";
 
 // Text that rolls up to a duplicate of itself on hover.
 const Roll = ({ children }: { children: string }) => (
@@ -96,7 +96,7 @@ export default function Navbar() {
                     e.preventDefault();
                     go(l.href);
                   }}
-                  className={`relative rounded-full px-4 py-2 text-sm transition-colors ${
+                  className={`relative rounded-lg px-4 py-2 text-sm transition-colors ${
                     active === l.href ? "bg-white/10 text-fg" : "text-muted hover:text-fg"
                   }`}
                 >
@@ -107,22 +107,17 @@ export default function Navbar() {
           </ul>
 
           <div className="flex items-center gap-2">
-            <Magnetic className="hidden sm:inline-block">
-              <a
-                href={profile.resume}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-ink transition-transform hover:scale-[1.03]"
-              >
-                Resume
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
-                  <path d="M6 1v8m0 0L2.5 5.5M6 9l3.5-3.5M1 11h10" stroke="currentColor" strokeWidth="1.5" />
-                </svg>
-              </a>
-            </Magnetic>
+            <a
+              href={profile.resume}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`hidden sm:inline-flex ${buttonClass("primary", "sm")}`}
+            >
+              Resume
+            </a>
             <button
               onClick={() => setOpen((o) => !o)}
-              className="relative flex size-10 items-center justify-center rounded-full border border-line lg:hidden"
+              className="relative flex size-10 items-center justify-center rounded-lg border border-line lg:hidden"
               aria-label={open ? "Close menu" : "Open menu"}
               aria-expanded={open}
             >
@@ -160,7 +155,7 @@ export default function Navbar() {
         <div className="flex flex-col gap-3 text-sm text-muted">
           <a href={`mailto:${profile.email}`} tabIndex={open ? 0 : -1}>{profile.email}</a>
           <a href={profile.resume} target="_blank" rel="noopener noreferrer" tabIndex={open ? 0 : -1} className="text-accent">
-            Download résumé ↗
+            Download résumé
           </a>
         </div>
       </div>

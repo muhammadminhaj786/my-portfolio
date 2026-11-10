@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
-import { marquee, skills } from "@/data/portfolio";
+import { now, skills } from "@/data/portfolio";
 import SectionHeading from "@/components/ui/SectionHeading";
 
 export default function Skills() {
@@ -21,17 +21,15 @@ export default function Skills() {
         scrollTrigger: { trigger: ".skill-grid", start: "top 80%" },
       });
 
-      // Two marquee rows drift in opposite directions (content is doubled, so -50% loops seamlessly).
-      gsap.utils.toArray<HTMLElement>(".marquee-track").forEach((row, i) => {
-        const [from, to] = i % 2 ? [-50, 0] : [0, -50];
-        gsap.fromTo(row, { xPercent: from }, { xPercent: to, duration: 40, ease: "none", repeat: -1 });
+      gsap.from(".now-item", {
+        y: 30,
+        autoAlpha: 0,
+        stagger: 0.1,
+        duration: 1,
+        ease: "expo.out",
+        scrollTrigger: { trigger: ".now", start: "top 85%" },
       });
 
-      gsap.to(".marquee-wrap", {
-        rotate: -2,
-        ease: "none",
-        scrollTrigger: { trigger: ".marquee-wrap", start: "top bottom", end: "bottom top", scrub: true },
-      });
     },
     { scope: root },
   );
@@ -52,7 +50,7 @@ export default function Skills() {
   return (
     <section ref={root} id="skills" className="relative overflow-hidden py-28 md:py-40">
       <div className="mx-auto max-w-7xl px-6 md:px-10">
-        <SectionHeading index="04" eyebrow="Skills & tools" title="My" accent="toolkit." />
+        <SectionHeading title="Skills" />
 
         <div className="skill-grid mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {skills.map((group, i) => (
@@ -66,7 +64,7 @@ export default function Skills() {
                 aria-hidden
                 className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                 style={{
-                  background: "radial-gradient(400px circle at var(--mx,50%) var(--my,50%), rgba(198,255,61,0.12), transparent 50%)",
+                  background: "radial-gradient(400px circle at var(--mx,50%) var(--my,50%), rgba(168,199,250,0.12), transparent 50%)",
                 }}
               />
               <div className="relative flex items-baseline justify-between">
@@ -85,19 +83,19 @@ export default function Skills() {
         </div>
       </div>
 
-      <div className="marquee-wrap mt-28 -mx-4 space-y-3 md:mt-36" aria-hidden>
-        {[0, 1].map((row) => (
-          <div key={row} className={`overflow-hidden py-3 ${row ? "border-y border-line" : "bg-accent text-ink"}`}>
-            <div className="marquee-track flex w-max">
-              {[...marquee, ...marquee].map((t, i) => (
-                <span key={i} className="flex items-center gap-8 pr-8 font-display text-4xl font-medium tracking-tight whitespace-nowrap md:text-6xl">
-                  {t}
-                  <span className={`font-serif text-3xl italic ${row ? "text-accent" : ""}`}>✦</span>
-                </span>
-              ))}
-            </div>
-          </div>
-        ))}
+      <div className="now mx-auto mt-24 max-w-7xl px-6 md:mt-32 md:px-10">
+        <div className="flex items-baseline justify-between gap-4 border-t border-line pt-8">
+          <h3 className="font-display text-2xl font-medium tracking-tight">Right now</h3>
+          <p className="text-sm text-muted">Updated {now.updated}</p>
+        </div>
+        <ul className="mt-8 grid gap-8 md:grid-cols-3 md:gap-10">
+          {now.items.map((item) => (
+            <li key={item.label} className="now-item">
+              <p className="text-sm text-muted">{item.label}</p>
+              <p className="mt-2 text-lg leading-snug text-fg">{item.text}</p>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

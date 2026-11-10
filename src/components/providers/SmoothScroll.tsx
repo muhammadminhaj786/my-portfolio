@@ -4,14 +4,13 @@ import { useEffect } from "react";
 import Lenis from "lenis";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { setLenis } from "@/lib/lenis";
-import { onIntroDone, sceneState } from "@/lib/scene-state";
+import { markIntroDone, sceneState } from "@/lib/scene-state";
 
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let lenis: Lenis | null = null;
     let tick: ((time: number) => void) | null = null;
-    let offIntro = () => {};
 
     if (!reduced) {
       lenis = new Lenis({ lerp: 0.09, smoothWheel: true, wheelMultiplier: 1 });
@@ -20,10 +19,11 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       gsap.ticker.add(tick);
       gsap.ticker.lagSmoothing(0);
       setLenis(lenis);
-      // Lock scrolling until the preloader has finished.
-      lenis.stop();
-      offIntro = onIntroDone(() => lenis?.start());
     }
+
+    // Grow the 3D blob in and let the hero and navbar animate.
+    gsap.to(sceneState, { intro: 1, duration: 1.6, ease: "elastic.out(1, 0.6)" });
+    markIntroDone();
 
     // Scroll velocity feeds the 3D blob so it reacts to how fast you scroll.
     const velocityTrigger = ScrollTrigger.create({
@@ -44,14 +44,13 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     };
     window.addEventListener("pointermove", onMove, { passive: true });
 
-    // Fonts change layout metrics — recalculate trigger positions once they land.
+    // Fonts change layout metrics, so recalculate trigger positions once they land.
     document.fonts?.ready.then(() => ScrollTrigger.refresh());
 
     return () => {
       window.removeEventListener("pointermove", onMove);
       gsap.ticker.remove(decay);
       if (tick) gsap.ticker.remove(tick);
-      offIntro();
       velocityTrigger.kill();
       lenis?.destroy();
       setLenis(null);

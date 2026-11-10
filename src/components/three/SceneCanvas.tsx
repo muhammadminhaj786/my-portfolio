@@ -3,7 +3,7 @@
 import { Component, type ReactNode } from "react";
 import dynamic from "next/dynamic";
 
-// WebGL only runs in the browser — load the scene lazily so it never blocks first paint.
+// WebGL only runs in the browser, so load the scene lazily so it never blocks first paint.
 const Scene = dynamic(() => import("./Scene"), { ssr: false });
 
 // If WebGL is unavailable (old GPU, disabled hardware acceleration) the page still works,
@@ -16,7 +16,7 @@ class WebGLBoundary extends Component<{ children: ReactNode }, { failed: boolean
   render() {
     if (this.state.failed) {
       return (
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_40%,rgba(106,75,255,0.35),transparent_45%),radial-gradient(circle_at_30%_80%,rgba(143,240,255,0.12),transparent_40%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_40%,rgba(59,85,120,0.35),transparent_45%),radial-gradient(circle_at_30%_80%,rgba(168,199,250,0.10),transparent_40%)]" />
       );
     }
     return this.props.children;

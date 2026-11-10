@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { gsap, SplitText, useGSAP } from "@/lib/gsap";
 import { contactTopics, profile } from "@/data/portfolio";
-import Magnetic from "@/components/ui/Magnetic";
+import { buttonClass } from "@/components/ui/button";
 import Select from "@/components/ui/Select";
 
 const field =
@@ -71,8 +71,8 @@ export default function Contact() {
       return;
     }
 
-    const subject = `${topic} — ${name}`;
-    const body = `Hi Minhaj,\n\n${problem}\n\n—\nName: ${name}\nEmail: ${email}\nNeed: ${topic}`;
+    const subject = `${topic} from ${name}`;
+    const body = `Hi Minhaj,\n\n${problem}\n\nName: ${name}\nEmail: ${email}\nNeed: ${topic}`;
     window.location.href = `mailto:${profile.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     setSent(true);
   };
@@ -92,17 +92,12 @@ export default function Contact() {
   return (
     <section ref={root} id="contact" className="relative px-6 py-28 md:px-10 md:py-40">
       <div className="mx-auto w-full max-w-7xl">
-        <p className="contact-fade mb-8 flex items-center gap-3 font-mono text-xs tracking-[0.25em] text-muted uppercase">
-          <span className="text-accent">07</span>
-          <span className="h-px w-10 bg-line" />
-          Contact
-        </p>
         <h2 className="contact-title max-w-5xl font-display text-[clamp(2.6rem,7vw,6.5rem)] leading-[0.95] font-medium tracking-tight">
-          Bring me the problem. <em className="font-serif font-normal text-accent italic">I&apos;ll bring the build.</em>
+          Get in touch
         </h2>
         <p className="contact-fade mt-8 max-w-2xl text-lg leading-relaxed text-muted">
-          Tell me what you&apos;re trying to fix or launch. You&apos;ll get a straight answer on how I&apos;d build it,
-          how long it takes and what it costs, usually within 24 hours. No sales call needed.
+          Have a project in mind, or hiring for a full-time role? Send me a message and I&apos;ll get back to you
+          within a day.
         </p>
 
         <div className="mt-16 grid gap-6 lg:grid-cols-12">
@@ -147,28 +142,22 @@ export default function Contact() {
 
             <div className="mt-5">
               <label htmlFor="c-problem" className={label}>
-                The problem
+                Message
               </label>
               <textarea
                 id="c-problem"
                 name="problem"
                 required
                 rows={5}
-                placeholder="What are you building, who is it for, and what's getting in the way?"
+                placeholder="Tell me a bit about the project or role"
                 className={`${field} resize-y`}
               />
             </div>
 
             <div className="mt-8 flex flex-wrap items-center gap-5">
-              <Magnetic strength={0.25}>
-                <button
-                  type="submit"
-                  className="inline-flex items-center gap-3 rounded-full bg-accent px-8 py-4 text-base font-medium text-ink transition-transform hover:scale-[1.03]"
-                >
-                  Send it over
-                  <span aria-hidden>→</span>
-                </button>
-              </Magnetic>
+              <button type="submit" className={buttonClass("primary", "lg")}>
+                Send message
+              </button>
               <p className="text-sm text-muted" aria-live="polite">
                 {sent ? "Your email app should open with everything filled in." : "Opens your email app, pre-filled."}
               </p>
@@ -184,15 +173,10 @@ export default function Contact() {
                     href={c.href}
                     target={c.href.startsWith("mailto") ? undefined : "_blank"}
                     rel="noopener noreferrer"
-                    className="group flex items-center justify-between gap-4 py-4"
+                    className="group block py-4"
                   >
-                    <span>
-                      <span className="block text-sm text-muted">{c.label}</span>
-                      <span className="mt-0.5 block break-all text-fg transition-colors group-hover:text-accent">{c.value}</span>
-                    </span>
-                    <span aria-hidden className="text-muted transition-transform group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-accent">
-                      ↗
-                    </span>
+                    <span className="block text-sm text-muted">{c.label}</span>
+                    <span className="mt-0.5 block break-all text-fg transition-colors group-hover:text-accent">{c.value}</span>
                   </a>
                 </li>
               ))}
@@ -200,7 +184,7 @@ export default function Contact() {
 
             <button
               onClick={copy}
-              className="mt-6 rounded-full border border-line px-5 py-3 font-mono text-xs transition-colors hover:border-fg"
+              className={`mt-6 ${buttonClass("secondary")}`}
               aria-live="polite"
             >
               {copied ? "Copied to clipboard ✓" : "Copy email address"}
@@ -211,7 +195,7 @@ export default function Contact() {
                 <span className="absolute inline-flex size-full animate-ping rounded-full bg-accent opacity-60" />
                 <span className="relative inline-flex size-2.5 rounded-full bg-accent" />
               </span>
-              {profile.available ? "Available for new projects · replying within 24 hours" : "Replying within 24 hours"}
+              {profile.available ? "Open to freelance and full-time work" : "Not taking new work right now"}
             </div>
           </aside>
         </div>

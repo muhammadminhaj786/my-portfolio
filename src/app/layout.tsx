@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
-import { introScript } from "@/components/layout/Preloader";
 import { profile } from "@/data/portfolio";
 import { siteUrl } from "@/lib/site";
 import "./globals.css";
@@ -14,7 +13,7 @@ const instrumentSerif = Instrument_Serif({
   style: ["normal", "italic"],
 });
 
-const title = `${profile.name} — MERN Stack & Next.js Developer in ${profile.location.split(",")[0]}`;
+const title = `${profile.name} | MERN Stack & Next.js Developer in ${profile.location.split(",")[0]}`;
 const description = `${profile.name} is a freelance ${profile.role} in ${profile.location} with ${profile.experienceYears}+ years of experience. I build fast, SEO-friendly web apps, SaaS platforms and business websites for clients worldwide with React, Next.js, Node.js and MongoDB.`;
 
 export const metadata: Metadata = {
@@ -56,7 +55,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#07070b",
+  themeColor: "#0a0b0d",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -66,9 +65,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} antialiased`}
     >
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: introScript }} />
-      </head>
       <body className="grain">{children}</body>
     </html>
   );

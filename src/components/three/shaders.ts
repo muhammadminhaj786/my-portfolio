@@ -1,4 +1,4 @@
-// Classic 3D Perlin noise — Stefan Gustavson / Ashima Arts (MIT).
+// Classic 3D Perlin noise by Stefan Gustavson / Ashima Arts (MIT).
 const noise = /* glsl */ `
 vec3 mod289(vec3 x){return x-floor(x*(1.0/289.0))*289.0;}
 vec4 mod289(vec4 x){return x-floor(x*(1.0/289.0))*289.0;}

@@ -1,10 +1,8 @@
 import SmoothScroll from "@/components/providers/SmoothScroll";
 import SceneCanvas from "@/components/three/SceneCanvas";
 import ScrollChoreography from "@/components/ScrollChoreography";
-import Preloader from "@/components/layout/Preloader";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import Cursor from "@/components/ui/Cursor";
 import ScrollProgress from "@/components/ui/ScrollProgress";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
@@ -12,7 +10,6 @@ import Experience from "@/components/sections/Experience";
 import Skills from "@/components/sections/Skills";
 import Projects from "@/components/sections/Projects";
 import Services from "@/components/sections/Services";
-import Process from "@/components/sections/Process";
 import Contact from "@/components/sections/Contact";
 import { about, education, experience, featuredProjects, profile, projects, services, skills } from "@/data/portfolio";
 import { projectImages } from "@/lib/project-images";
@@ -59,7 +56,7 @@ const jsonLd = {
       "@type": "ProfilePage",
       "@id": `${siteUrl}/#profile`,
       url: siteUrl,
-      name: `${profile.name} — ${profile.role}`,
+      name: `${profile.name}, ${profile.role}`,
       isPartOf: { "@id": `${siteUrl}/#website` },
       mainEntity: { "@id": personId },
     },
@@ -114,11 +111,9 @@ export default function Home() {
       >
         Skip to content
       </a>
-      <Preloader />
       <SceneCanvas />
       <div aria-hidden className="vignette pointer-events-none fixed inset-0 -z-[5]" />
       <ScrollProgress />
-      <Cursor />
       <Navbar />
       <main className="relative">
         <Hero />
@@ -127,7 +122,6 @@ export default function Home() {
         <Experience />
         <Skills />
         <Projects />
-        <Process />
         <Contact />
       </main>
       <Footer />

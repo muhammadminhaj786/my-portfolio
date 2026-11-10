@@ -2,7 +2,7 @@
 // Kept outside React so scroll updates never trigger re-renders.
 
 export const sceneState = {
-  intro: 0, // 0 → 1 once the preloader finishes
+  intro: 0, // 0 → 1 on first load
   x: 1.9,
   y: 0,
   z: 0,
@@ -10,7 +10,7 @@ export const sceneState = {
   distort: 0.35,
   colorMix: 0,
   rings: 1,
-  dim: 1, // brightness multiplier — lowered when the blob sits behind body text
+  dim: 1, // brightness multiplier, lowered when the blob sits behind body text
   velocity: 0,
   mouseX: 0,
   mouseY: 0,
@@ -18,7 +18,7 @@ export const sceneState = {
 
 export type SceneKeyframe = Partial<Omit<typeof sceneState, "intro" | "velocity" | "mouseX" | "mouseY">>;
 
-// Intro handshake between the preloader and the sections that animate in after it.
+// Intro handshake: SmoothScroll marks the page ready, sections animate in after it.
 let introDone = false;
 const listeners = new Set<() => void>();
 

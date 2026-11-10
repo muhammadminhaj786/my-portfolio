@@ -59,7 +59,7 @@ export default function Experience() {
   return (
     <section ref={root} id="experience" className="relative px-6 py-28 md:px-10 md:py-40">
       <div className="mx-auto max-w-7xl">
-        <SectionHeading index="03" eyebrow="Experience" title="Where I've" accent="worked." />
+        <SectionHeading title="Experience" />
 
         <ol className="xp-list relative mt-20 md:mt-28">
           <span aria-hidden className="absolute top-0 bottom-0 left-[7px] w-px bg-line md:left-[calc(33.333%+7px)]" />

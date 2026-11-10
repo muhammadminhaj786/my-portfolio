@@ -5,7 +5,7 @@ import { gsap, SplitText, useGSAP } from "@/lib/gsap";
 import { scrollToTarget } from "@/lib/lenis";
 import { onIntroDone } from "@/lib/scene-state";
 import { profile } from "@/data/portfolio";
-import Magnetic from "@/components/ui/Magnetic";
+import { buttonClass } from "@/components/ui/button";
 
 export default function Hero() {
   const root = useRef<HTMLElement>(null);
@@ -14,8 +14,8 @@ export default function Hero() {
     (_, contextSafe) => {
       const first = SplitText.create(".hero-first", { type: "chars", mask: "chars" });
       const last = SplitText.create(".hero-last", { type: "chars", mask: "chars" });
-      // Resolve elements now: the intro callback fires from the preloader's GSAP context,
-      // where string selectors would be scoped to the preloader instead of this section.
+      // Resolve elements now: the intro callback fires outside this section's GSAP context,
+      // where string selectors wouldn't be scoped to this section.
       const fades = gsap.utils.toArray<HTMLElement>(".hero-fade");
       gsap.set([first.chars, last.chars], { yPercent: 115 });
       gsap.set(fades, { autoAlpha: 0, y: 24 });
@@ -65,7 +65,7 @@ export default function Hero() {
 
         <h1 className="font-display leading-[0.86] font-medium tracking-[-0.04em]">
           <span className="sr-only">
-            {profile.name} — {profile.role}
+            {profile.name}, {profile.role}
           </span>
           <span aria-hidden className="hero-first block text-[clamp(3.6rem,13vw,12.5rem)]">
             Muhammad
@@ -86,28 +86,12 @@ export default function Hero() {
           </div>
 
           <div className="hero-fade flex flex-wrap gap-3 md:col-span-4">
-            <Magnetic>
-              <button
-                onClick={() => scrollToTarget("#projects")}
-                className="group inline-flex items-center gap-3 rounded-full bg-fg px-6 py-3.5 text-sm font-medium text-ink"
-              >
-                View my work
-                <span className="transition-transform group-hover:translate-x-1">→</span>
-              </button>
-            </Magnetic>
-            <Magnetic>
-              <a
-                href={profile.resume}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-ink/60 px-6 py-3.5 text-sm backdrop-blur-md transition-colors hover:border-fg hover:bg-ink/80"
-              >
-                Download CV
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
-                  <path d="M6 1v8m0 0L2.5 5.5M6 9l3.5-3.5M1 11h10" stroke="currentColor" strokeWidth="1.5" />
-                </svg>
-              </a>
-            </Magnetic>
+            <button onClick={() => scrollToTarget("#projects")} className={buttonClass("primary", "lg")}>
+              View my work
+            </button>
+            <a href={profile.resume} target="_blank" rel="noopener noreferrer" className={buttonClass("secondary", "lg")}>
+              Download CV
+            </a>
           </div>
 
           <dl className="hero-fade grid grid-cols-3 gap-4 border-t border-line pt-5 md:col-span-3 md:border-0 md:pt-0">

@@ -6,12 +6,13 @@ import { gsap, useGSAP } from "@/lib/gsap";
 import { featuredProjects, profile, projects } from "@/data/portfolio";
 import { projectImages } from "@/lib/project-images";
 import SectionHeading from "@/components/ui/SectionHeading";
+import { buttonClass } from "@/components/ui/button";
 
 const prettyUrl = (url: string) => url.replace(/^https?:\/\//, "").replace(/\/$/, "");
 
 function BrowserFrame({ url, children, className = "" }: { url: string; children: React.ReactNode; className?: string }) {
   return (
-    <div className={`overflow-hidden rounded-2xl border border-white/10 bg-[#111118] shadow-2xl shadow-black/50 ${className}`}>
+    <div className={`overflow-hidden rounded-2xl border border-white/10 bg-[#121418] shadow-2xl shadow-black/50 ${className}`}>
       <div className="flex items-center gap-1.5 border-b border-white/10 px-4 py-2.5">
         <span className="size-2.5 rounded-full bg-[#ff5f57]/80" />
         <span className="size-2.5 rounded-full bg-[#febc2e]/80" />
@@ -29,9 +30,7 @@ function LinkButton({ href, primary, children }: { href: string; primary?: boole
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className={`inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-colors ${
-        primary ? "bg-accent text-ink hover:bg-fg" : "border border-line hover:border-fg"
-      }`}
+      className={buttonClass(primary ? "primary" : "secondary")}
     >
       {children}
     </a>
@@ -47,7 +46,7 @@ function FeaturedProject({ featured, index }: { featured: (typeof featuredProjec
     >
       <div className={`lg:col-span-7 ${flipped ? "lg:order-2" : ""}`}>
         <div className="lg:sticky lg:top-28">
-          <a href={featured.live} target="_blank" rel="noopener noreferrer" data-cursor="Visit" aria-label={`Open ${featured.title} live`}>
+          <a href={featured.live} target="_blank" rel="noopener noreferrer" aria-label={`Open ${featured.title} live`}>
             <BrowserFrame url={featured.live} className="fk-frame">
               <div className="relative aspect-[16/10]">
                 <Image src={projectImages[featured.images.cover]} alt={featured.images.coverAlt} fill sizes="(min-width:1024px) 58vw, 100vw" placeholder="blur" loading={index === 0 ? "eager" : "lazy"} className="object-cover object-top" />
@@ -115,9 +114,9 @@ function FeaturedProject({ featured, index }: { featured: (typeof featuredProjec
           </ul>
           <div className="flex flex-wrap gap-3">
             <LinkButton href={featured.live} primary>
-              Live site ↗
+              Live site
             </LinkButton>
-            {featured.code && <LinkButton href={featured.code}>Source code ↗</LinkButton>}
+            {featured.code && <LinkButton href={featured.code}>Source code</LinkButton>}
           </div>
         </div>
       </div>
@@ -138,7 +137,6 @@ function ProjectCard({ project, index }: { project: (typeof projects)[number]; i
           href,
           target: "_blank",
           rel: "noopener noreferrer",
-          "data-cursor": project.live ? "Visit" : "Code",
           "aria-label": `Open ${project.title}`,
         })}
         className="relative block aspect-[16/10] overflow-hidden rounded-3xl border border-line bg-ink"
@@ -148,7 +146,7 @@ function ProjectCard({ project, index }: { project: (typeof projects)[number]; i
           <BrowserFrame url={href || project.category} className="h-full">
             {img ? (
               <div className="relative h-full">
-                <Image src={img} alt={`${project.title} — ${project.category} website screenshot`} fill sizes="(min-width:1024px) 40vw, 90vw" placeholder="blur" className="object-cover object-top" />
+                <Image src={img} alt={`${project.title}, ${project.category} website screenshot`} fill sizes="(min-width:1024px) 40vw, 90vw" placeholder="blur" className="object-cover object-top" />
               </div>
             ) : (
               <div className="flex h-full flex-col justify-center px-[9%] pb-10">
@@ -194,12 +192,12 @@ function ProjectCard({ project, index }: { project: (typeof projects)[number]; i
           <div className="flex gap-4 text-sm">
             {project.live && (
               <a href={project.live} target="_blank" rel="noopener noreferrer" className="text-fg underline decoration-line underline-offset-4 hover:text-accent">
-                Live ↗
+                Live
               </a>
             )}
             {project.code && (
               <a href={project.code} target="_blank" rel="noopener noreferrer" className="text-fg underline decoration-line underline-offset-4 hover:text-accent">
-                Code ↗
+                Code
               </a>
             )}
           </div>
@@ -318,7 +316,7 @@ export default function Projects() {
   return (
     <section ref={root} id="projects" className="relative pt-28 pb-28 md:pt-40 lg:pb-0">
       <div className="mx-auto max-w-7xl px-6 md:px-10">
-        <SectionHeading index="05" eyebrow="Selected work" title="Featured" accent="projects." />
+        <SectionHeading title="Work" />
       </div>
 
       {featuredProjects.map((f, i) => (
@@ -336,7 +334,7 @@ export default function Projects() {
             rel="noopener noreferrer"
             className="shrink-0 text-sm text-muted underline decoration-line underline-offset-8 transition-colors hover:text-accent"
           >
-            60+ repos on GitHub ↗
+            60+ repos on GitHub
           </a>
         </div>
         <div

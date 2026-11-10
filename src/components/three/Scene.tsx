@@ -21,10 +21,10 @@ function Blob({ detail }: { detail: number }) {
       uMouse: { value: new THREE.Vector2() },
       uColorMix: { value: 0 },
       uDim: { value: 1 },
-      uColorA: { value: new THREE.Color("#120a33") },
-      uColorB: { value: new THREE.Color("#6a4bff") },
-      uColorC: { value: new THREE.Color("#8ff0ff") },
-      uColorD: { value: new THREE.Color("#c6ff3d") },
+      uColorA: { value: new THREE.Color("#0d1320") },
+      uColorB: { value: new THREE.Color("#3b5578") },
+      uColorC: { value: new THREE.Color("#dfe9fb") },
+      uColorD: { value: new THREE.Color("#a8c7fa") },
     }),
     [],
   );
@@ -97,7 +97,7 @@ function Rings() {
             ref={(m) => {
               if (m) mats.current[i] = m;
             }}
-            color={i === 0 ? "#c6ff3d" : "#8ff0ff"}
+            color={i === 0 ? "#a8c7fa" : "#d6dde8"}
             transparent
             opacity={0}
           />
@@ -147,7 +147,7 @@ function Particles({ count }: { count: number }) {
     () => ({
       uTime: { value: 0 },
       uPixelRatio: { value: Math.min(gl.getPixelRatio(), 2) },
-      uColor: { value: new THREE.Color("#b9c4ff") },
+      uColor: { value: new THREE.Color("#c9d3e2") },
     }),
     [gl],
   );
